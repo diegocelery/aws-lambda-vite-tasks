@@ -19,7 +19,8 @@ Navegador (Vite/React)  ──HTTPS──▶  Lambda Function URL  ──▶  La
 |---------|-----------|
 | `infra/` | Terraform: DynamoDB, Lambda (Node 20, arm64), Function URL pública, IAM |
 | `lambda/` | Código de la función (`index.mjs`): router CRUD sobre DynamoDB |
-| `web/` | Frontend Vite + React (UI "diario de quehaceres") |
+| `web/` | Frontend Vite + React (UI "diario de quehaceres") + tests (Vitest) |
+| `tests/` | Tests del backend: `unit/` (handler mockeado) y `e2e/` (API real) |
 
 ## API
 
@@ -56,6 +57,26 @@ cp .env.example .env      # rellena VITE_API_URL con la function_url
 npm install
 npm run dev               # http://localhost:5173
 npm run build             # build de producción en dist/
+```
+
+## Tests
+
+| Tipo | Qué prueba | Herramientas | Cómo se ejecuta |
+|------|------------|--------------|-----------------|
+| **Unit (backend)** | El handler de la Lambda: routing, CRUD, validaciones (400), 404, sin cabeceras CORS duplicadas. DynamoDB mockeado, sin red. | `node:test` + `aws-sdk-client-mock` | `npm install && npm test` (en la raíz) |
+| **E2E (API)** | CRUD completo contra la **API real** desplegada (create → list → update → delete) + 404/400. | `node:test` + `fetch` | `API_URL=<function_url> npm run test:e2e` |
+| **Unit (frontend)** | Componentes React (`App`, `TaskRow`): carga, vacío, crear, completar, editar, borrar, error. API mockeado. | Vitest + React Testing Library | `npm test` (en `web/`) |
+
+```bash
+# Backend (raíz del repo)
+npm install
+npm test                                  # unit (14)
+API_URL=https://XXXX.lambda-url.us-east-2.on.aws npm run test:e2e   # e2e (3)
+
+# Frontend
+cd web
+npm install
+npm test                                  # unit React (10)
 ```
 
 ## Despliegue continuo (Vercel)
