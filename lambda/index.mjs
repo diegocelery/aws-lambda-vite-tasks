@@ -12,16 +12,16 @@ import { randomUUID } from "node:crypto";
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const TABLE = process.env.TABLE_NAME;
 
-const CORS = {
+// El CORS lo gestiona la Lambda Function URL (config en infra/lambda.tf). NO añadir
+// cabeceras Access-Control-* aquí: se duplicarían con las de la Function URL y el
+// navegador rechazaría la respuesta ("multiple values" → Failed to fetch).
+const HEADERS = {
   "Content-Type": "application/json",
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "Access-Control-Allow-Headers": "content-type",
 };
 
 const res = (statusCode, body) => ({
   statusCode,
-  headers: CORS,
+  headers: HEADERS,
   body: body === undefined ? "" : JSON.stringify(body),
 });
 
