@@ -4,9 +4,14 @@ Lista de tareas (To-Do) full-stack **serverless**: backend en AWS (Lambda +
 DynamoDB) desplegado con **Terraform**, y frontend en **Vite + React** desplegado en
 **Vercel**.
 
+**🔗 Demo en vivo:** https://aws-lambda-vite-tasks.vercel.app/
+
 ```
 Navegador (Vite/React)  ──HTTPS──▶  Lambda Function URL  ──▶  Lambda  ──▶  DynamoDB
 ```
+
+> Las decisiones de diseño y los problemas resueltos durante el desarrollo están
+> documentados en [RETROSPECTIVA.md](RETROSPECTIVA.md).
 
 ## Estructura
 
@@ -55,11 +60,16 @@ npm run build             # build de producción en dist/
 
 ## Despliegue continuo (Vercel)
 
-El repo de GitHub se conecta a Vercel (Root Directory `web/`, preset *Vite*). La
-variable `VITE_API_URL` se define en Vercel con la `function_url`. Cada push a la rama
-por defecto redepliega; los PRs generan *Preview Deployments*.
+El repo de GitHub se conecta a Vercel (Root Directory `web`, preset *Vite*). La
+variable `VITE_API_URL` se define en Vercel con la `function_url` (Production y
+Preview). Cada push a la rama por defecto redepliega; los PRs generan *Preview
+Deployments*.
+
+> **Importante (Vite):** `VITE_API_URL` se incrusta en **tiempo de build**. Si la
+> cambias en Vercel, hay que **redesplegar** para que surta efecto.
 
 ---
 
-Tecnologías: AWS Lambda · DynamoDB · API Gateway*  · Terraform · Vite · React · Vercel
-<sub>*Probado también con API Gateway HTTP API como alternativa a la Function URL.</sub>
+Tecnologías: AWS Lambda · DynamoDB · Terraform · Vite · React · Vercel
+<sub>Durante el desarrollo se probó también API Gateway HTTP API como alternativa a la
+Function URL (ver RETROSPECTIVA.md).</sub>
