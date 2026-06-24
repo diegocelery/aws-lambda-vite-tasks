@@ -1,0 +1,477 @@
+:root {
+  --paper: #f3ecde;
+  --sheet: #f7f1e6;
+  --ink: #221d18;
+  --ink-soft: #5b524740;
+  --muted: #8a7f70;
+  --accent: #c2401f;
+  --accent-deep: #9c2f15;
+  --hair: #221d1822;
+  --hair-strong: #221d1840;
+  --shadow: 30px 40px 80px -40px #2a201833;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-ui: "Hanken Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background:
+    radial-gradient(120% 80% at 50% -10%, #fbf6ec 0%, var(--paper) 55%, #ece2cf 100%);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--sheet);
+}
+
+.page {
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: clamp(1rem, 4vw, 4.5rem) 1rem 4rem;
+  position: relative;
+}
+
+/* Textura de grano sutil sobre todo el lienzo */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.04;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Hoja ---------- */
+.sheet {
+  width: 100%;
+  max-width: 660px;
+  background: var(--sheet);
+  border: 1px solid var(--hair-strong);
+  border-radius: 3px;
+  box-shadow: var(--shadow);
+  padding: clamp(1.5rem, 5vw, 3.25rem) clamp(1.25rem, 5vw, 3.25rem) 2rem;
+  position: relative;
+}
+
+/* Margen rojo de cuaderno */
+.sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 clamp(1rem, 5vw, 2.4rem);
+  width: 1px;
+  background: var(--accent);
+  opacity: 0.22;
+}
+
+/* ---------- Cabecera ---------- */
+.masthead {
+  margin-bottom: 1.75rem;
+}
+
+.dateline {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  margin-bottom: 0.9rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: clamp(2.8rem, 11vw, 4.75rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+}
+
+.title-mark {
+  color: var(--accent);
+}
+
+.subtitle {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  color: var(--muted);
+  margin-top: 0.6rem;
+}
+
+.rule {
+  height: 1px;
+  background: var(--hair-strong);
+}
+
+.rule--double {
+  height: 4px;
+  margin-top: 1.4rem;
+  background: none;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+
+/* ---------- Composer ---------- */
+.composer {
+  display: flex;
+  gap: 0.75rem;
+  align-items: stretch;
+  margin-bottom: 1.5rem;
+}
+
+.composer-input {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 3.5vw, 1.3rem);
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--hair-strong);
+  padding: 0.65rem 0.2rem;
+  transition: border-color 0.25s ease;
+}
+
+.composer-input::placeholder {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.composer-input:focus {
+  outline: none;
+  border-bottom-color: var(--accent);
+}
+
+.composer-btn {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sheet);
+  background: var(--ink);
+  border: none;
+  border-radius: 2px;
+  padding: 0 1.4rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.composer-btn:hover:not(:disabled) {
+  background: var(--accent);
+}
+
+.composer-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.composer-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ---------- Banner ---------- */
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0.9rem;
+  margin-bottom: 1.25rem;
+  border-radius: 2px;
+  font-size: 0.85rem;
+}
+
+.banner--error {
+  background: #c2401f14;
+  border: 1px solid #c2401f44;
+  color: var(--accent-deep);
+}
+
+.banner-action {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: none;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  padding: 0.25rem 0.6rem;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* ---------- Lista ---------- */
+.list {
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.95rem;
+  padding: 0.95rem 0.2rem;
+  border-bottom: 1px solid var(--hair);
+  overflow: hidden;
+}
+
+.row:first-child {
+  border-top: 1px solid var(--hair);
+}
+
+.check {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 0.15rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.check-tick {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: var(--sheet);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.row--done .check {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.row--done .check-tick {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.row-body {
+  flex: 1;
+  min-width: 0;
+  padding-top: 0.05rem;
+}
+
+.row-title {
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  line-height: 1.35;
+  color: var(--ink);
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: text;
+  word-break: break-word;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+/* Tachado animado */
+.row-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 52%;
+  height: 1.5px;
+  width: 100%;
+  background: var(--muted);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s ease;
+}
+
+.row--done .row-title {
+  color: var(--muted);
+}
+
+.row--done .row-title::after {
+  transform: scaleX(1);
+}
+
+.row-edit {
+  width: 100%;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  line-height: 1.35;
+  color: var(--ink);
+  background: #fff6;
+  border: none;
+  border-bottom: 1.5px solid var(--accent);
+  padding: 0.1rem 0.2rem;
+}
+
+.row-edit:focus {
+  outline: none;
+}
+
+.row-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  opacity: 0;
+  transform: translateX(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.row:hover .row-actions,
+.row:focus-within .row-actions {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.ghost {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  padding: 0.3rem 0.45rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+
+.ghost:hover {
+  color: var(--ink);
+  background: #221d180a;
+}
+
+.ghost--danger:hover {
+  color: var(--accent);
+}
+
+/* ---------- Estados ---------- */
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 3.5rem 1rem;
+  color: var(--muted);
+  font-style: italic;
+  font-family: var(--font-display);
+}
+
+.state--empty .empty-mark {
+  font-size: 3rem;
+  line-height: 0.5;
+  color: var(--accent);
+  opacity: 0.5;
+}
+
+.state .muted {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.spinner {
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--hair-strong);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Recuento ---------- */
+.tally {
+  margin-top: 1.75rem;
+}
+
+.tally-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tally-item em {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--accent);
+  margin-right: 0.3rem;
+}
+
+.tally-item--done em {
+  color: var(--ink);
+}
+
+.tally-sep {
+  opacity: 0.4;
+}
+
+.tally-grow {
+  flex: 1;
+}
+
+.tally-total {
+  color: var(--ink);
+}
+
+/* ---------- Foco accesible ---------- */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 540px) {
+  .row-actions {
+    opacity: 1;
+    transform: none;
+  }
+  .composer-btn {
+    padding: 0.7rem 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

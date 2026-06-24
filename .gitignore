@@ -1,0 +1,18 @@
+# Terraform
+infra/.terraform/
+*.tfstate
+*.tfstate.*
+infra/build/
+crash.log
+
+# Node / Vite
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+
+# Editores / OS
+.DS_Store
+.vscode/
+.idea/

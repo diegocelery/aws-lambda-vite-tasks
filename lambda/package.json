@@ -1,0 +1,7 @@
+{
+  "name": "tasks-lambda",
+  "version": "1.0.0",
+  "description": "CRUD de tareas sobre DynamoDB (Lambda Function URL)",
+  "type": "module",
+  "main": "index.mjs"
+}
